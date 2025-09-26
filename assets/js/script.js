@@ -69,70 +69,100 @@ const journeyMilestones = [
 ];
 
 // ===================================
-// FLOATING HEARTS ANIMATION SYSTEM
+// FLOATING HEARTS ANIMATION SYSTEM - COMPLETELY REWRITTEN
+// Clean Dual-Direction Architecture: Left (Top-Down) | Right (Bottom-Up)
 // ===================================
 
 class FloatingHeartsAnimation {
     constructor() {
         this.container = DOM.floatingHeartsContainer;
-        this.heartEmojis = ['💕', '💖', '💗', '💓', '💝']; // Reduced to 5 emojis
+        this.heartEmojis = ['💕', '💖', '💗', '💓', '💝'];
         this.animationActive = true;
-        this.heartCount = 0;
-        this.maxHearts = 8; // Reduced for two lanes
-        this.spawnRate = 3000; // Increased interval for fewer hearts
+        this.leftLaneHearts = 0;
+        this.rightLaneHearts = 0;
+        this.maxHeartsPerLane = 3;
+        this.spawnInterval = 5000; // 5 seconds between spawns
         this.initialize();
     }
     
     initialize() {
         if (!this.container) return;
-        
-        this.startHeartAnimation();
+        this.startDualLaneAnimation();
         this.setupPerformanceOptimization();
     }
     
-    startHeartAnimation() {
-        this.spawnHeart();
+    startDualLaneAnimation() {
+        // Initial spawn for both lanes
+        this.spawnLeftLaneHeart();
+        this.spawnRightLaneHeart();
         
-        this.heartInterval = setInterval(() => {
-            if (this.animationActive && this.heartCount < this.maxHearts) {
-                this.spawnHeart();
+        // Set up staggered intervals
+        this.leftLaneInterval = setInterval(() => {
+            if (this.animationActive && this.leftLaneHearts < this.maxHeartsPerLane) {
+                this.spawnLeftLaneHeart();
             }
-        }, this.spawnRate + Math.random() * 1000); // Add randomness to spawn timing
+        }, this.spawnInterval);
+        
+        // Right lane starts 2.5 seconds after left lane for staggered effect
+        setTimeout(() => {
+            this.rightLaneInterval = setInterval(() => {
+                if (this.animationActive && this.rightLaneHearts < this.maxHeartsPerLane) {
+                    this.spawnRightLaneHeart();
+                }
+            }, this.spawnInterval);
+        }, 2500);
     }
     
-    spawnHeart() {
+    spawnLeftLaneHeart() {
+        const heart = this.createHeart('left-lane');
+        const leftPosition = Math.random() * (window.innerWidth * 0.35); // Left 35% of screen
+        
+        this.positionAndAnimateHeart(heart, leftPosition, () => {
+            this.leftLaneHearts--;
+        });
+        
+        this.leftLaneHearts++;
+    }
+    
+    spawnRightLaneHeart() {
+        const heart = this.createHeart('right-lane');
+        const rightPosition = window.innerWidth * 0.65 + Math.random() * (window.innerWidth * 0.35); // Right 35% of screen
+        
+        this.positionAndAnimateHeart(heart, rightPosition, () => {
+            this.rightLaneHearts--;
+        });
+        
+        this.rightLaneHearts++;
+    }
+    
+    createHeart(laneClass) {
         const heart = document.createElement('div');
-        heart.className = 'floating-heart';
+        heart.className = `floating-heart ${laneClass}`;
         heart.textContent = this.getRandomHeart();
+        return heart;
+    }
+    
+    positionAndAnimateHeart(heart, xPosition, onComplete) {
+        const duration = 8000 + Math.random() * 4000; // 8-12 seconds
+        const driftX = (Math.random() - 0.5) * 30; // Subtle horizontal drift
+        const rotation = Math.random() * 720; // Up to 2 full rotations
         
-        // Two-lane positioning system
-        const isLeftLane = Math.random() < 0.5;
-        const lanePosition = isLeftLane ? 
-            Math.random() * (window.innerWidth * 0.3) : // Left 30% of screen
-            window.innerWidth * 0.7 + Math.random() * (window.innerWidth * 0.3); // Right 30% of screen
-        
-        const driftX = (Math.random() - 0.5) * 50; // Reduced drift for lane consistency
-        const duration = 12000 + Math.random() * 2000; // 12-14 seconds - longer duration
-        const delay = Math.random() * 2000;
-        const rotation = Math.random() * 360;
-        
-        // Apply CSS custom properties for animation
+        // Set CSS custom properties
         heart.style.setProperty('--heart-duration', `${duration}ms`);
-        heart.style.setProperty('--heart-delay', `${delay}ms`);
         heart.style.setProperty('--drift-x', `${driftX}px`);
         heart.style.setProperty('--rotation', `${rotation}deg`);
-        heart.style.left = `${lanePosition}px`;
+        heart.style.left = `${xPosition}px`;
         
+        // Add to DOM
         this.container.appendChild(heart);
-        this.heartCount++;
         
-        // Remove heart after animation completes
+        // Clean removal after animation completes
         setTimeout(() => {
             if (heart.parentNode) {
                 heart.parentNode.removeChild(heart);
-                this.heartCount--;
+                onComplete();
             }
-        }, duration + delay + 1000);
+        }, duration + 100); // Small buffer for animation completion
     }
     
     getRandomHeart() {
@@ -145,16 +175,6 @@ class FloatingHeartsAnimation {
             this.animationActive = !document.hidden;
         });
         
-        // Reduce animation on battery devices
-        if ('getBattery' in navigator) {
-            navigator.getBattery().then(battery => {
-                if (battery.level < 0.2) {
-                    this.spawnRate *= 2; // Slower spawn rate on low battery
-                    this.maxHearts = Math.floor(this.maxHearts / 2);
-                }
-            });
-        }
-        
         // Respect user's motion preferences
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             this.destroy();
@@ -162,9 +182,8 @@ class FloatingHeartsAnimation {
     }
     
     destroy() {
-        if (this.heartInterval) {
-            clearInterval(this.heartInterval);
-        }
+        if (this.leftLaneInterval) clearInterval(this.leftLaneInterval);
+        if (this.rightLaneInterval) clearInterval(this.rightLaneInterval);
         this.animationActive = false;
         if (this.container) {
             this.container.innerHTML = '';
