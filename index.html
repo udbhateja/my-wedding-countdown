@@ -10,37 +10,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Floating Hearts Animation Container -->
+    <div class="floating-hearts-container" id="floatingHeartsContainer"></div>
+    
     <main class="countdown-container">
-        <header class="countdown-header">
-            <h1 class="main-title">Our Wedding Day</h1>
-            <p class="wedding-date">November 21, 2025</p>
-        </header>
-        
-        <section class="countdown-display" id="countdownDisplay">
-            <div class="countdown-grid">
-                <div class="time-unit">
-                    <span class="time-number" id="days">000</span>
-                    <span class="time-label">Days</span>
-                </div>
-                <div class="time-unit">
-                    <span class="time-number" id="hours">00</span>
-                    <span class="time-label">Hours</span>
-                </div>
-                <div class="time-unit">
-                    <span class="time-number" id="minutes">00</span>
-                    <span class="time-label">Minutes</span>
-                </div>
-                <div class="time-unit">
-                    <span class="time-number" id="seconds">00</span>
-                    <span class="time-label">Seconds</span>
-                </div>
+        <div class="names-section">
+            <div class="names-display">
+                <h1 class="couple-names">Uday <span class="heart-separator">❤️</span> Komal</h1>
             </div>
-        </section>
+        </div>
         
-        <footer class="countdown-footer">
-            <p class="journey-prompt">Tap anywhere to see our journey</p>
-            <div class="heart-icon">💕</div>
-        </footer>
+        <div class="content-section">
+            <header class="countdown-header">
+                <h2 class="main-title">Our Wedding Day</h2>
+                <p class="wedding-date">November 21, 2025</p>
+            </header>
+            
+            <section class="countdown-display" id="countdownDisplay">
+                <div class="countdown-grid">
+                    <div class="time-unit">
+                        <span class="time-number" id="days">000</span>
+                        <span class="time-label">Days</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-number" id="hours">00</span>
+                        <span class="time-label">Hours</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-number" id="minutes">00</span>
+                        <span class="time-label">Minutes</span>
+                    </div>
+                    <div class="time-unit">
+                        <span class="time-number" id="seconds">00</span>
+                        <span class="time-label">Seconds</span>
+                    </div>
+                </div>
+            </section>
+            
+            <div class="spacer"></div>
+            
+            <footer class="countdown-footer">
+                <p class="journey-prompt">Tap anywhere to see our journey</p>
+                <div class="click-indicator"></div>
+            </footer>
+        </div>
     </main>
     
     <div class="tap-overlay" id="tapOverlay"></div>

@@ -17,7 +17,8 @@ const DOM = {
     minutes: document.getElementById('minutes'),
     seconds: document.getElementById('seconds'),
     tapOverlay: document.getElementById('tapOverlay'),
-    timelineContainer: document.getElementById('timelineContainer')
+    timelineContainer: document.getElementById('timelineContainer'),
+    floatingHeartsContainer: document.getElementById('floatingHeartsContainer')
 };
 
 // Journey Data Structure (To be populated with actual content)
@@ -66,6 +67,110 @@ const journeyMilestones = [
     }
     // Additional milestones will be added here
 ];
+
+// ===================================
+// FLOATING HEARTS ANIMATION SYSTEM
+// ===================================
+
+class FloatingHeartsAnimation {
+    constructor() {
+        this.container = DOM.floatingHeartsContainer;
+        this.heartEmojis = ['💕', '💖', '💗', '💓', '💝']; // Reduced to 5 emojis
+        this.animationActive = true;
+        this.heartCount = 0;
+        this.maxHearts = 8; // Reduced for two lanes
+        this.spawnRate = 3000; // Increased interval for fewer hearts
+        this.initialize();
+    }
+    
+    initialize() {
+        if (!this.container) return;
+        
+        this.startHeartAnimation();
+        this.setupPerformanceOptimization();
+    }
+    
+    startHeartAnimation() {
+        this.spawnHeart();
+        
+        this.heartInterval = setInterval(() => {
+            if (this.animationActive && this.heartCount < this.maxHearts) {
+                this.spawnHeart();
+            }
+        }, this.spawnRate + Math.random() * 1000); // Add randomness to spawn timing
+    }
+    
+    spawnHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.textContent = this.getRandomHeart();
+        
+        // Two-lane positioning system
+        const isLeftLane = Math.random() < 0.5;
+        const lanePosition = isLeftLane ? 
+            Math.random() * (window.innerWidth * 0.3) : // Left 30% of screen
+            window.innerWidth * 0.7 + Math.random() * (window.innerWidth * 0.3); // Right 30% of screen
+        
+        const driftX = (Math.random() - 0.5) * 50; // Reduced drift for lane consistency
+        const duration = 12000 + Math.random() * 2000; // 12-14 seconds - longer duration
+        const delay = Math.random() * 2000;
+        const rotation = Math.random() * 360;
+        
+        // Apply CSS custom properties for animation
+        heart.style.setProperty('--heart-duration', `${duration}ms`);
+        heart.style.setProperty('--heart-delay', `${delay}ms`);
+        heart.style.setProperty('--drift-x', `${driftX}px`);
+        heart.style.setProperty('--rotation', `${rotation}deg`);
+        heart.style.left = `${lanePosition}px`;
+        
+        this.container.appendChild(heart);
+        this.heartCount++;
+        
+        // Remove heart after animation completes
+        setTimeout(() => {
+            if (heart.parentNode) {
+                heart.parentNode.removeChild(heart);
+                this.heartCount--;
+            }
+        }, duration + delay + 1000);
+    }
+    
+    getRandomHeart() {
+        return this.heartEmojis[Math.floor(Math.random() * this.heartEmojis.length)];
+    }
+    
+    setupPerformanceOptimization() {
+        // Pause animation when page is not visible
+        document.addEventListener('visibilitychange', () => {
+            this.animationActive = !document.hidden;
+        });
+        
+        // Reduce animation on battery devices
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(battery => {
+                if (battery.level < 0.2) {
+                    this.spawnRate *= 2; // Slower spawn rate on low battery
+                    this.maxHearts = Math.floor(this.maxHearts / 2);
+                }
+            });
+        }
+        
+        // Respect user's motion preferences
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            this.destroy();
+        }
+    }
+    
+    destroy() {
+        if (this.heartInterval) {
+            clearInterval(this.heartInterval);
+        }
+        this.animationActive = false;
+        if (this.container) {
+            this.container.innerHTML = '';
+        }
+    }
+}
 
 // ===================================
 // COUNTDOWN FUNCTIONALITY
@@ -127,7 +232,7 @@ class CountdownTimer {
     
     formatTimeValue(value, unit) {
         if (unit === 'days') {
-            return value.toString().padStart(3, '0');
+            return value.toString(); // Remove padding for days
         }
         return value.toString().padStart(2, '0');
     }
@@ -312,6 +417,7 @@ class Utils {
 
 class App {
     constructor() {
+        this.floatingHearts = null;
         this.initialize();
     }
     
@@ -327,9 +433,10 @@ class App {
     }
     
     initializeComponents() {
-        // Initialize countdown timer on main page
+        // Initialize countdown timer and floating hearts on main page
         if (document.querySelector('.countdown-container')) {
             new CountdownTimer();
+            this.floatingHearts = new FloatingHeartsAnimation();
         }
         
         // Initialize journey timeline on journey page
@@ -345,6 +452,17 @@ class App {
         
         // Add smooth page transitions
         this.setupPageTransitions();
+        
+        // Setup cleanup on page unload
+        this.setupCleanup();
+    }
+    
+    setupCleanup() {
+        window.addEventListener('beforeunload', () => {
+            if (this.floatingHearts) {
+                this.floatingHearts.destroy();
+            }
+        });
     }
     
     setupPageTransitions() {
