@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Wedding Countdown</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="countdown-container">
+        <header class="countdown-header">
+            <h1 class="main-title">Our Wedding Day</h1>
+            <p class="wedding-date">November 21, 2025</p>
+        </header>
+        
+        <section class="countdown-display" id="countdownDisplay">
+            <div class="countdown-grid">
+                <div class="time-unit">
+                    <span class="time-number" id="days">000</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-number" id="hours">00</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-number" id="minutes">00</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-number" id="seconds">00</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="countdown-footer">
+            <p class="journey-prompt">Tap anywhere to see our journey</p>
+            <div class="heart-icon">💕</div>
+        </footer>
+    </main>
+    
+    <div class="tap-overlay" id="tapOverlay"></div>
+    
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

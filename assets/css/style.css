@@ -1,0 +1,502 @@
+/* ===================================
+   MARRIAGE COUNTDOWN WEBSITE STYLES
+   Mobile-First Responsive Design
+   =================================== */
+
+/* CSS Custom Properties (Variables) */
+:root {
+    /* Color Palette */
+    --primary-color: #ff6b9d;
+    --secondary-color: #ffeaa7;
+    --accent-color: #fd79a8;
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
+    --text-light: #ddd;
+    --background-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --background-secondary: #fff;
+    --background-card: rgba(255, 255, 255, 0.95);
+    --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 15px 50px rgba(0, 0, 0, 0.2);
+    
+    /* Typography */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-romantic: 'Great Vibes', cursive;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 50%;
+    
+    /* Animation Durations */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-primary);
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--background-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===================================
+   COUNTDOWN PAGE STYLES
+   =================================== */
+
+.countdown-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: var(--spacing-md);
+    text-align: center;
+    position: relative;
+}
+
+.countdown-header {
+    margin-bottom: var(--spacing-xl);
+    animation: fadeInUp 1s ease-out;
+}
+
+.main-title {
+    font-family: var(--font-romantic);
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: var(--text-light);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.wedding-date {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    color: var(--secondary-color);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.countdown-display {
+    margin-bottom: var(--spacing-xl);
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.time-unit {
+    background: var(--background-card);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-medium);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform var(--transition-normal);
+}
+
+.time-unit:hover {
+    transform: translateY(-2px);
+}
+
+.time-number {
+    display: block;
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 600;
+    color: var(--primary-color);
+    line-height: 1;
+    margin-bottom: var(--spacing-xs);
+}
+
+.time-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.countdown-footer {
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.journey-prompt {
+    color: var(--text-light);
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.9;
+}
+
+.heart-icon {
+    font-size: 2rem;
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+.tap-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* ===================================
+   JOURNEY PAGE STYLES
+   =================================== */
+
+.journey-page {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.journey-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    min-height: 100vh;
+}
+
+.journey-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+}
+
+.back-button {
+    background: var(--background-card);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-md);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--shadow-light);
+    transition: all var(--transition-normal);
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+}
+
+.back-button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+}
+
+.journey-title {
+    font-family: var(--font-romantic);
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.journey-subtitle {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+.timeline-container {
+    position: relative;
+    padding: var(--spacing-lg) 0;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: var(--spacing-xl);
+    z-index: 2;
+}
+
+.timeline-item:nth-child(even) .timeline-card {
+    margin-left: auto;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 50%;
+    top: var(--spacing-md);
+    width: 16px;
+    height: 16px;
+    background: var(--primary-color);
+    border-radius: var(--radius-full);
+    transform: translateX(-50%);
+    border: 3px solid var(--background-secondary);
+    box-shadow: var(--shadow-light);
+    z-index: 3;
+}
+
+.timeline-card {
+    background: var(--background-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+    max-width: 350px;
+    margin-right: calc(50% + 30px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform var(--transition-normal);
+}
+
+.timeline-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.timeline-item:nth-child(even) .timeline-card {
+    margin-left: calc(50% + 30px);
+    margin-right: 0;
+}
+
+.card-image-placeholder {
+    height: 200px;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.timeline-card:hover .card-image-placeholder img {
+    transform: scale(1.05);
+}
+
+.card-content {
+    padding: var(--spacing-md);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.card-date {
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.journey-footer {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+}
+
+.footer-text {
+    color: var(--text-light);
+    font-size: 1.125rem;
+    font-weight: 300;
+    opacity: 0.8;
+}
+
+/* ===================================
+   ANIMATIONS
+   =================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* ===================================
+   RESPONSIVE BREAKPOINTS
+   =================================== */
+
+/* Small screens (tablets) */
+@media (min-width: 768px) {
+    .countdown-grid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 600px;
+        gap: var(--spacing-lg);
+    }
+    
+    .timeline-line {
+        left: 40px;
+        transform: none;
+    }
+    
+    .timeline-marker {
+        left: 40px;
+        transform: translateX(-50%);
+    }
+    
+    .timeline-card {
+        margin-left: 80px;
+        margin-right: 0;
+        max-width: none;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-card {
+        margin-left: 80px;
+        margin-right: 0;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .countdown-container {
+        padding: var(--spacing-xl);
+    }
+    
+    .journey-container {
+        max-width: 1000px;
+        padding: var(--spacing-xl);
+    }
+    
+    .timeline-line {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .timeline-marker {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .timeline-card {
+        max-width: 400px;
+        margin-right: calc(50% + 30px);
+    }
+    
+    .timeline-item:nth-child(even) .timeline-card {
+        margin-left: calc(50% + 30px);
+        margin-right: 0;
+    }
+}
+
+/* Extra large screens */
+@media (min-width: 1440px) {
+    .countdown-grid {
+        max-width: 800px;
+    }
+    
+    .journey-container {
+        max-width: 1200px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .time-unit:hover,
+    .timeline-card:hover,
+    .back-button:hover {
+        transform: none;
+    }
+    
+    .time-unit:active {
+        transform: scale(0.98);
+    }
+    
+    .timeline-card:active {
+        transform: scale(0.98);
+    }
+    
+    .back-button:active {
+        transform: scale(0.95);
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .main-title,
+    .journey-title {
+        text-rendering: optimizeLegibility;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #f8f9fa;
+        --text-secondary: #adb5bd;
+        --background-card: rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}
