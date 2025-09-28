@@ -295,100 +295,13 @@ class CountdownTimer {
 }
 
 // ===================================
-// JOURNEY PAGE FUNCTIONALITY
+// JOURNEY PAGE FUNCTIONALITY - SIMPLIFIED
 // ===================================
 
 class JourneyTimeline {
     constructor() {
-        this.milestones = journeyMilestones;
-        this.initialize();
-    }
-    
-    initialize() {
-        if (DOM.timelineContainer) {
-            this.renderTimeline();
-            this.setupScrollAnimations();
-        }
-    }
-    
-    renderTimeline() {
-        // Clear existing content except the timeline line
-        const timelineLine = DOM.timelineContainer.querySelector('.timeline-line');
-        DOM.timelineContainer.innerHTML = '';
-        if (timelineLine) {
-            DOM.timelineContainer.appendChild(timelineLine);
-        }
-        
-        // Sort milestones chronologically
-        const sortedMilestones = this.milestones.sort((a, b) => 
-            new Date(a.date) - new Date(b.date)
-        );
-        
-        // Render each milestone
-        sortedMilestones.forEach((milestone, index) => {
-            const timelineItem = this.createTimelineItem(milestone, index);
-            DOM.timelineContainer.appendChild(timelineItem);
-        });
-    }
-    
-    createTimelineItem(milestone, index) {
-        const item = document.createElement('div');
-        item.className = 'timeline-item';
-        item.setAttribute('data-aos', 'fade-up');
-        item.setAttribute('data-aos-delay', `${index * 100}`);
-        
-        const formattedDate = this.formatDate(milestone.date);
-        const imagePath = `assets/images/${milestone.image}`;
-        
-        item.innerHTML = `
-            <div class="timeline-marker"></div>
-            <div class="timeline-card">
-                <div class="card-image-placeholder">
-                    <img src="${imagePath}" 
-                         alt="${milestone.title}" 
-                         loading="lazy"
-                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmZjZiOWQiLz48dGV4dCB4PSIyMDAiIHk9IjEwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4Ij5QaG90byBDb21pbmcgU29vbjwvdGV4dD48L3N2Zz4='">
-                </div>
-                <div class="card-content">
-                    <h3 class="card-title">${milestone.title}</h3>
-                    <p class="card-date">${formattedDate}</p>
-                    <p class="card-description">${milestone.description}</p>
-                </div>
-            </div>
-        `;
-        
-        return item;
-    }
-    
-    formatDate(dateString) {
-        const date = new Date(dateString);
-        const options = { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        };
-        return date.toLocaleDateString('en-US', options);
-    }
-    
-    setupScrollAnimations() {
-        // Simple scroll-based animation using Intersection Observer
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                }
-            });
-        }, observerOptions);
-        
-        // Observe all timeline items
-        document.querySelectorAll('.timeline-item').forEach(item => {
-            observer.observe(item);
-        });
+        // Simple coming soon page - no timeline functionality needed
+        console.log('Journey page loaded - Coming Soon');
     }
 }
 
@@ -495,7 +408,7 @@ class App {
 }
 
 // Initialize application
-new App();
+// This will be replaced by EnhancedApp initialization below
 
 // ===================================
 // ADDITIONAL CSS ANIMATIONS VIA JS
@@ -519,3 +432,24 @@ const animationCSS = `
 const styleSheet = document.createElement('style');
 styleSheet.textContent = animationCSS;
 document.head.appendChild(styleSheet);
+
+
+
+class EnhancedApp extends App {
+    constructor() {
+        super();
+        // No timeline initialization needed for journey page - just loading state
+    }
+    
+    setupCleanup() {
+        super.setupCleanup();
+        // Cleanup code if needed
+    }
+}
+
+// Initialize enhanced application
+if (typeof App !== 'undefined') {
+    // Use regular enhanced app for all pages
+    window.app = new EnhancedApp();
+}
+

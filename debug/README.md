@@ -1,0 +1,1 @@
+# Debug folder - for testing purposes\n\nThis folder contains test files used during development.\n
