@@ -557,32 +557,45 @@ body {
 }
 
 /* ===================================
-   JOURNEY PAGE - LOADING STATE ONLY
-   Clean Coming Soon Design
+   PHASE 3C: FLOATING CARDS CONSTELLATION
+   Romantic Stars in the Sky of Love
    =================================== */
 
-/* Journey Loading State */
-.journey-loading {
+/* Constellation CSS Variables */
+:root {
+    /* Constellation Colors */
+    --constellation-bg: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #ff6b9d 50%, #ffeaa7 75%, #fd79a8 100%);
+    --star-glow: rgba(255, 255, 255, 0.8);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --card-hover-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    
+    /* Constellation Animation Timings */
+    --float-duration: 6s;
+    --twinkle-duration: 3s;
+    --entrance-duration: 0.8s;
+    --hover-duration: 0.3s;
+}
+
+/* Constellation Header */
+.constellation-header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 25%, #fd79a8 50%, #fdcb6e 75%, #e17055 100%);
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-sm) var(--spacing-md);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    padding: var(--spacing-md);
+    justify-content: space-between;
+    min-height: 60px;
 }
 
-.journey-loading .back-button {
-    position: absolute;
-    top: var(--spacing-md);
-    left: var(--spacing-md);
+.constellation-header .back-button {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
@@ -599,72 +612,239 @@ body {
     box-shadow: var(--shadow-light);
 }
 
-.journey-loading .back-button:hover {
+.constellation-header .back-button:hover {
     background: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
 }
 
-.journey-loading .back-arrow {
-    font-size: 1.1em;
-    font-weight: bold;
-}
-
-.journey-loading-content {
+.constellation-title {
+    font-family: var(--font-romantic);
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    color: var(--primary-color);
+    margin: 0;
     text-align: center;
-    max-width: 500px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.journey-loading-title {
-    font-family: var(--font-romantic);
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    color: white;
-    margin-bottom: var(--spacing-md);
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    animation: titleGlow 3s ease-in-out infinite;
+/* Main Constellation Container */
+.constellation-container {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--constellation-bg);
+    overflow-y: auto; /* Allow vertical scrolling */
+    overflow-x: hidden;
+    padding: var(--spacing-md);
 }
 
-.journey-loading-heart {
-    font-size: clamp(4rem, 8vw, 6rem);
-    animation: heartPulse 2s ease-in-out infinite;
-    margin-bottom: var(--spacing-md);
+.constellation-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    /* Remove overflow hidden to allow proper sizing */
 }
 
-.journey-loading-text {
-    font-family: var(--font-romantic);
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    color: white;
+/* Background Twinkling Stars */
+.background-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.background-star {
+    position: absolute;
+    color: var(--star-glow);
+    font-size: clamp(0.5rem, 1vw, 0.8rem);
+    animation: twinkle var(--twinkle-duration) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Constellation Cards Container */
+.constellation-cards {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+/* Individual Constellation Card */
+.constellation-card {
+    position: absolute;
+    width: 280px;
+    max-width: 90vw;
+    min-height: 220px; /* Ensure consistent height */
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all var(--hover-duration) ease;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    animation: constellationEntrance var(--entrance-duration) ease-out forwards;
+    animation-delay: var(--entrance-delay, 0s);
+    
+    /* Floating animation */
+    animation-name: constellationEntrance, gentleFloat;
+    animation-duration: var(--entrance-duration), var(--float-duration);
+    animation-timing-function: ease-out, ease-in-out;
+    animation-delay: var(--entrance-delay, 0s), var(--entrance-delay, 0s);
+    animation-iteration-count: 1, infinite;
+    animation-fill-mode: forwards, none;
+    
+    /* Clean production styling */
+}
+
+/* Card Hover Effects */
+.constellation-card:hover {
+    transform: scale(1.05) translateY(-8px);
+    box-shadow: var(--card-hover-shadow);
+    z-index: 20;
+}
+
+.constellation-card:hover .constellation-emoji {
+    transform: scale(1.2);
+    text-shadow: 0 0 20px currentColor;
+}
+
+/* Card Content */
+.constellation-emoji {
+    font-size: clamp(2rem, 5vw, 3rem);
+    text-align: center;
     margin-bottom: var(--spacing-sm);
-    opacity: 0.9;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    transition: all var(--hover-duration) ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
-.journey-loading-subtitle {
-    font-family: var(--font-primary);
-    font-size: clamp(1rem, 3vw, 1.2rem);
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 300;
-    line-height: 1.4;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+.constellation-card-title {
+    font-family: var(--font-romantic);
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    color: var(--primary-color);
+    margin: 0 0 var(--spacing-xs) 0;
+    text-align: center;
+    line-height: 1.3;
 }
 
-@keyframes titleGlow {
-    0%, 100% {
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-    50% {
-        text-shadow: 0 2px 20px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 107, 157, 0.4);
-    }
+.constellation-card-date {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-weight: 500;
+    background: rgba(255, 107, 157, 0.1);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+    margin: 0 auto;
 }
 
-@keyframes heartPulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.8;
+.constellation-card-content {
+    text-align: center;
+}
+
+/* Constellation Animation Keyframes */
+@keyframes constellationEntrance {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
     }
-    50% {
-        transform: scale(1.1);
+    to {
         opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: translateY(0px) translateX(0px);
+    }
+    25% {
+        transform: translateY(-3px) translateX(2px);
+    }
+    50% {
+        transform: translateY(2px) translateX(-1px);
+    }
+    75% {
+        transform: translateY(-1px) translateX(-2px);
+    }
+}
+
+/* Constellation Loading State */
+.constellation-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--constellation-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.constellation-loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.constellation-loading .loading-heart {
+    font-size: 4rem;
+    animation: heartPulse 1.5s ease-in-out infinite;
+    margin-bottom: var(--spacing-md);
+}
+
+.constellation-loading .loading-text {
+    font-family: var(--font-romantic);
+    font-size: 1.3rem;
+    color: white;
+    text-align: center;
+    opacity: 0.9;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .constellation-card {
+        width: 260px;
+        min-height: 200px;
+        padding: var(--spacing-sm);
+    }
+    
+    .constellation-container {
+        padding: var(--spacing-sm);
+    }
+}
+
+/* Tablet and Desktop Adjustments */
+@media (min-width: 1024px) {
+    .constellation-card {
+        width: 300px;
+        min-height: 240px;
+    }
+    
+    .constellation-container {
+        padding: var(--spacing-lg);
     }
 }
 

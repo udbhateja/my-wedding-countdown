@@ -10,19 +10,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="journey-page">
-    <!-- Journey Loading State -->
-    <div class="journey-loading" id="journeyLoading">
+    <!-- Journey Header -->
+    <header class="constellation-header">
         <button class="back-button" onclick="window.location.href='index.html'">
             <span class="back-arrow">←</span>
             <span class="back-text">Back to Countdown</span>
         </button>
-        
-        <div class="journey-loading-content">
-            <h1 class="journey-loading-title">Our Love Journey</h1>
-            <div class="journey-loading-heart">💕</div>
-            <p class="journey-loading-text">Coming Soon</p>
-            <p class="journey-loading-subtitle">We're creating something magical for you...</p>
+        <h1 class="constellation-title">Our Love Journey</h1>
+    </header>
+    
+    <!-- Constellation Container -->
+    <main class="constellation-container" id="constellationContainer">
+        <div class="constellation-wrapper">
+            <!-- Twinkling background stars -->
+            <div class="background-stars" id="backgroundStars"></div>
+            
+            <!-- Floating milestone cards will be dynamically generated here -->
+            <div class="constellation-cards" id="constellationCards"></div>
         </div>
+    </main>
+    
+    <!-- Loading state -->
+    <div class="constellation-loading" id="constellationLoading">
+        <div class="loading-heart">💕</div>
+        <p class="loading-text">Creating your constellation...</p>
     </div>
     
     <script src="assets/js/script.js"></script>

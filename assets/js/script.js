@@ -28,42 +28,48 @@ const journeyMilestones = [
         title: "First Meeting",
         date: "2023-01-15",
         description: "The day our paths crossed for the first time",
-        image: "first-meeting.jpg"
+        image: "first-meeting.jpg",
+        constellation: { emoji: "🌟", color: "#ff6b9d" }
     },
     {
         id: 2,
         title: "First Date",
         date: "2023-02-14",
         description: "A perfect Valentine's Day that started it all",
-        image: "first-date.jpg"
+        image: "first-date.jpg",
+        constellation: { emoji: "💕", color: "#fd79a8" }
     },
     {
         id: 3,
         title: "First Movie Together",
         date: "2023-03-20",
         description: "Sharing popcorn and stolen glances",
-        image: "first-movie.jpg"
+        image: "first-movie.jpg",
+        constellation: { emoji: "🎬", color: "#ffeaa7" }
     },
     {
         id: 4,
         title: "Made It Official",
         date: "2023-05-01",
         description: "The day we became 'us'",
-        image: "official.jpg"
+        image: "official.jpg",
+        constellation: { emoji: "💖", color: "#fab1a0" }
     },
     {
         id: 5,
         title: "First Trip Together",
         date: "2023-08-15",
         description: "Creating memories in new places",
-        image: "first-trip.jpg"
+        image: "first-trip.jpg",
+        constellation: { emoji: "✈️", color: "#a29bfe" }
     },
     {
         id: 6,
         title: "The Proposal",
         date: "2024-12-25",
         description: "Christmas magic and the most important question",
-        image: "proposal.jpg"
+        image: "proposal.jpg",
+        constellation: { emoji: "💍", color: "#e17055" }
     }
     // Additional milestones will be added here
 ];
@@ -433,23 +439,409 @@ const styleSheet = document.createElement('style');
 styleSheet.textContent = animationCSS;
 document.head.appendChild(styleSheet);
 
+// ===================================
+// PHASE 3C: FLOATING CARDS CONSTELLATION
+// Mathematical Positioning and Animation System
+// ===================================
 
+class FloatingCardsConstellation {
+    constructor() {
+        this.container = document.getElementById('constellationContainer');
+        this.cardsContainer = document.getElementById('constellationCards');
+        this.backgroundStars = document.getElementById('backgroundStars');
+        this.loading = document.getElementById('constellationLoading');
+        
+        this.cards = [];
+        this.positions = [];
+        this.isDesktop = window.innerWidth >= 1024;
+        this.animationRAF = null;
+        
+        if (this.container) {
+            this.initialize();
+        }
+    }
+    
+    initialize() {
+        this.createBackgroundStars();
+        this.calculatePositions();
+        this.renderConstellationCards();
+        this.startFloatingAnimations();
+        this.setupResponsiveHandling();
+        this.hideLoadingState();
+    }
+    
+    createBackgroundStars() {
+        if (!this.backgroundStars) return;
+        
+        const starEmojis = ['✨', '⭐', '🌟', '💫', '⚡'];
+        const numStars = this.isDesktop ? 15 : 8;
+        
+        for (let i = 0; i < numStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'background-star';
+            star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
+            
+            // Random positioning
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const delay = Math.random() * 3; // Random delay for twinkling
+            
+            star.style.left = `${x}%`;
+            star.style.top = `${y}%`;
+            star.style.setProperty('--delay', `${delay}s`);
+            
+            this.backgroundStars.appendChild(star);
+        }
+    }
+    
+    calculatePositions() {
+        if (!this.container) return;
+        
+        // Wait a moment for container to be properly sized
+        setTimeout(() => {
+            const containerRect = this.container.getBoundingClientRect();
+            
+            const containerWidth = containerRect.width - 40; // Account for padding
+            const containerHeight = containerRect.height - 40;
+            const cardWidth = this.isDesktop ? 300 : 280;
+            const cardHeight = 220; // More accurate card height
+            const minDistance = this.isDesktop ? 350 : 260; // Much larger minimum distance
+            
+            this.positions = [];
+            
+            if (this.isDesktop) {
+                // Desktop: Scattered constellation pattern
+                this.positions = this.generateScatteredPositions(
+                    containerWidth, containerHeight, cardWidth, cardHeight, minDistance
+                );
+            } else {
+                // Mobile: Vertical constellation with staggered positioning
+                this.positions = this.generateVerticalConstellationPositions(
+                    containerWidth, containerHeight, cardWidth, cardHeight
+                );
+            }
+            
+            // Re-render cards with new positions if they were already rendered
+            if (this.cards.length > 0) {
+                this.renderConstellationCards();
+            }
+        }, 100);
+    }
+    
+    generateScatteredPositions(containerWidth, containerHeight, cardWidth, cardHeight, minDistance) {
+        const positions = [];
+        const numCards = journeyMilestones.length;
+        
+        // Much more spread out approach for desktop
+        const margin = 80;
+        const usableWidth = containerWidth - (margin * 2) - cardWidth;
+        const usableHeight = containerHeight - (margin * 2) - cardHeight;
+        
+        console.log('Desktop generation:', {
+            containerWidth, containerHeight, usableWidth, usableHeight, minDistance
+        });
+        
+        // Create positions in a more spaced out pattern
+        for (let i = 0; i < numCards; i++) {
+            const progress = i / Math.max(1, numCards - 1);
+            
+            // Create two rows with 3 cards each, staggered
+            const row = Math.floor(i / 3);
+            const col = i % 3;
+            const rowOffset = row * (usableHeight * 0.6); // Large row separation
+            const colOffset = col * (usableWidth / 2); // Spread horizontally
+            
+            // Add some variation to make it feel more organic
+            const xVariation = Math.sin(i * 1.5) * 60;
+            const yVariation = Math.cos(i * 0.9) * 40;
+            
+            const baseX = margin + colOffset;
+            const baseY = margin + rowOffset;
+            
+            const x = Math.max(margin, Math.min(baseX + xVariation, containerWidth - cardWidth - margin));
+            const y = Math.max(margin, Math.min(baseY + yVariation, containerHeight - cardHeight - margin));
+            
+            positions.push({
+                x,
+                y,
+                zIndex: i + 1
+            });
+        }
+        
+        console.log('Desktop positions before collision check:', positions);
+        
+        // Apply collision detection
+        const adjusted = this.adjustForCollisions(positions, cardWidth, cardHeight, minDistance);
+        console.log('Desktop positions after collision check:', adjusted);
+        
+        return adjusted;
+    }
+    
+    generateChronologicalPath(containerWidth, containerHeight, numCards) {
+        const points = [];
+        const margin = 60;
+        const usableWidth = containerWidth - (margin * 2);
+        const usableHeight = containerHeight - (margin * 2);
+        
+        for (let i = 0; i < numCards; i++) {
+            const progress = i / (numCards - 1); // 0 to 1
+            
+            // Create a flowing S-curve path from top-left to bottom-right
+            let x, y;
+            
+            if (i === 0) {
+                // First meeting - top left
+                x = margin;
+                y = margin;
+            } else if (i === numCards - 1) {
+                // Proposal - bottom right
+                x = containerWidth - margin - 300;
+                y = containerHeight - margin - 200;
+            } else {
+                // Create flowing path between start and end
+                const xBase = margin + (usableWidth * progress);
+                const yBase = margin + (usableHeight * progress);
+                
+                // Add S-curve variation
+                const curveAmplitude = usableWidth * 0.15;
+                const curveOffset = Math.sin(progress * Math.PI * 2) * curveAmplitude;
+                
+                x = xBase + curveOffset;
+                y = yBase + (Math.sin(progress * Math.PI) * 50); // Gentle vertical variation
+            }
+            
+            points.push({ x, y });
+        }
+        
+        return points;
+    }
+    
+    adjustForCollisions(positions, cardWidth, cardHeight, minDistance) {
+        const adjustedPositions = [...positions];
+        const maxIterations = 10;
+        
+        for (let iteration = 0; iteration < maxIterations; iteration++) {
+            let hasCollisions = false;
+            
+            for (let i = 0; i < adjustedPositions.length; i++) {
+                for (let j = i + 1; j < adjustedPositions.length; j++) {
+                    const pos1 = adjustedPositions[i];
+                    const pos2 = adjustedPositions[j];
+                    
+                    const dx = pos2.x - pos1.x;
+                    const dy = pos2.y - pos1.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < minDistance && distance > 0) {
+                        hasCollisions = true;
+                        
+                        // Calculate push direction
+                        const angle = Math.atan2(dy, dx);
+                        const pushDistance = (minDistance - distance) / 2 + 5;
+                        
+                        // Push both cards apart
+                        pos1.x -= Math.cos(angle) * pushDistance;
+                        pos1.y -= Math.sin(angle) * pushDistance;
+                        pos2.x += Math.cos(angle) * pushDistance;
+                        pos2.y += Math.sin(angle) * pushDistance;
+                        
+                        console.log(`Collision detected between cards ${i} and ${j}, distance: ${distance.toFixed(2)}`);
+                    }
+                }
+            }
+            
+            if (!hasCollisions) {
+                console.log(`Collision resolution completed after ${iteration + 1} iterations`);
+                break;
+            }
+        }
+        
+        return adjustedPositions;
+    }
+    
+    generateVerticalConstellationPositions(containerWidth, containerHeight, cardWidth, cardHeight) {
+        const positions = [];
+        const numCards = journeyMilestones.length;
+        const margin = 20;
+        
+        // Super simple: just stack vertically with large gaps
+        const cardSpacing = 280; // Fixed large spacing
+        let currentY = margin;
+        
+        console.log('Simple mobile layout:', {
+            containerWidth, containerHeight, cardSpacing, numCards
+        });
+        
+        for (let i = 0; i < numCards; i++) {
+            // Alternate sides but with huge spacing
+            const isEven = i % 2 === 0;
+            const x = isEven ? margin : containerWidth - cardWidth - margin;
+            
+            positions.push({
+                x: Math.max(margin, Math.min(x, containerWidth - cardWidth - margin)),
+                y: currentY,
+                zIndex: i + 1
+            });
+            
+            currentY += cardSpacing; // Large fixed spacing
+        }
+        
+        console.log('Simple mobile positions:', positions);
+        return positions;
+    }
+    
+    renderConstellationCards() {
+        if (!this.cardsContainer || !journeyMilestones.length) return;
+        
+        // Clear existing cards
+        this.cardsContainer.innerHTML = '';
+        this.cards = [];
+        
+        journeyMilestones.forEach((milestone, index) => {
+            const card = this.createConstellationCard(milestone, index);
+            this.cardsContainer.appendChild(card);
+            this.cards.push(card);
+        });
+    }
+    
+    createConstellationCard(milestone, index) {
+        const position = this.positions[index] || { x: 50, y: 50, zIndex: 1 };
+        
+        const card = document.createElement('div');
+        card.className = 'constellation-card';
+        card.setAttribute('data-milestone-id', milestone.id);
+        
+        // Position the card
+        card.style.left = `${position.x}px`;
+        card.style.top = `${position.y}px`;
+        card.style.zIndex = position.zIndex;
+        card.style.setProperty('--entrance-delay', `${index * 0.2}s`);
+        
+        // Format date
+        const date = new Date(milestone.date);
+        const formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Card content
+        card.innerHTML = `
+            <div class="constellation-card-content">
+                <div class="constellation-emoji" style="color: ${milestone.constellation.color}">
+                    ${milestone.constellation.emoji}
+                </div>
+                <h3 class="constellation-card-title">${milestone.title}</h3>
+                <div class="constellation-card-date">${formattedDate}</div>
+            </div>
+        `;
+        
+        // Add click handler
+        card.addEventListener('click', () => this.handleCardClick(milestone, index));
+        
+        return card;
+    }
+    
+    startFloatingAnimations() {
+        // Floating animations are handled by CSS
+        // This method can be used for additional dynamic animations if needed
+        console.log('Floating animations started via CSS');
+    }
+    
+    handleCardClick(milestone, index) {
+        console.log(`Constellation card clicked: ${milestone.title}`);
+        
+        // Add click animation
+        const card = this.cards[index];
+        if (card) {
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 150);
+        }
+        
+        // Show milestone detail modal (placeholder for now)
+        this.showMilestoneModal(milestone);
+    }
+    
+    showMilestoneModal(milestone) {
+        // Simple alert for now - will be enhanced in Step 4
+        const message = `${milestone.constellation.emoji} ${milestone.title}\n\n${milestone.description}\n\nDate: ${new Date(milestone.date).toLocaleDateString()}`;
+        alert(message);
+    }
+    
+    setupResponsiveHandling() {
+        window.addEventListener('resize', () => {
+            // Debounce resize events
+            clearTimeout(this.resizeTimeout);
+            this.resizeTimeout = setTimeout(() => {
+                const wasDesktop = this.isDesktop;
+                this.isDesktop = window.innerWidth >= 1024;
+                
+                if (wasDesktop !== this.isDesktop) {
+                    console.log('Layout changed, recalculating positions...');
+                    this.calculatePositions();
+                    this.renderConstellationCards();
+                }
+            }, 250);
+        });
+    }
+    
+    hideLoadingState() {
+        if (this.loading) {
+            setTimeout(() => {
+                this.loading.classList.add('hidden');
+                setTimeout(() => {
+                    this.loading.style.display = 'none';
+                }, 500);
+            }, 1500); // Show loading for 1.5 seconds
+        }
+    }
+    
+    destroy() {
+        if (this.animationRAF) {
+            cancelAnimationFrame(this.animationRAF);
+        }
+        
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
+        }
+        
+        // Remove event listeners
+        window.removeEventListener('resize', this.setupResponsiveHandling);
+        
+        console.log('Floating Cards Constellation destroyed');
+    }
+}
 
-class EnhancedApp extends App {
+class ConstellationApp extends App {
     constructor() {
         super();
-        // No timeline initialization needed for journey page - just loading state
+        this.constellation = null;
+        this.initializeConstellation();
+    }
+    
+    initializeConstellation() {
+        // Only initialize constellation on journey page
+        if (document.body.classList.contains('journey-page')) {
+            this.constellation = new FloatingCardsConstellation();
+        }
     }
     
     setupCleanup() {
         super.setupCleanup();
-        // Cleanup code if needed
+        
+        window.addEventListener('beforeunload', () => {
+            if (this.constellation) {
+                this.constellation.destroy();
+            }
+        });
     }
 }
 
-// Initialize enhanced application
+// Initialize constellation application
 if (typeof App !== 'undefined') {
-    // Use regular enhanced app for all pages
-    window.app = new EnhancedApp();
+    // Use constellation app for all pages
+    window.app = new ConstellationApp();
 }
 
