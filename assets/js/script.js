@@ -472,8 +472,6 @@ class VerticalZigzagTimeline {
         
         // Build card HTML
         card.innerHTML = `
-            <div class="card-sparkle">✨</div>
-            
             <div class="card-image">
                 ${milestone.image ? `
                     <img src="assets/images/${milestone.image}" alt="${milestone.title}" loading="lazy">
@@ -483,25 +481,19 @@ class VerticalZigzagTimeline {
             </div>
             
             <div class="card-content">
-                <div class="card-date-badge">
-                    <span>📅</span>
-                    <span>${formattedDate}</span>
+                <div class="card-date-location">
+                    <div class="card-date">
+                        <span class="card-date-icon"></span>
+                        <span>${formattedDate}</span>
+                    </div>
+                    <span class="date-location-separator">•</span>
+                    <div class="card-location">
+                        <span class="card-location-icon"></span>
+                        <span>${milestone.location || 'Unknown'}</span>
+                    </div>
                 </div>
                 
                 <h3 class="card-title">${milestone.title}</h3>
-                
-                ${milestone.location ? `
-                    <div class="card-location">
-                        <span>📍</span>
-                        <span>${milestone.location}</span>
-                    </div>
-                ` : ''}
-                
-                <div class="card-hearts">
-                    <span class="card-heart">💕</span>
-                    <span class="card-heart">💖</span>
-                    <span class="card-heart">💗</span>
-                </div>
             </div>
         `;
         

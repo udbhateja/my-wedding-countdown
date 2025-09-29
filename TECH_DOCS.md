@@ -237,12 +237,28 @@ my-wedding-countdown/
   - **12 Milestones**: Complete love story from First Meeting to Engagement Party
   - **Optimized Height**: Reduced card min-height to 320px for cleaner layout
   - **Production Ready**: Clean code, focus on images and essential info only
+- **2025-09-30:** **✅ PHASE 3D CARD DESIGN ENHANCEMENT - OPTION A IMPLEMENTATION**
+  - **Full-Bleed Image Design**: Images touch card edges with rounded top corners only
+  - **Enhanced Gradient Background**: Lavender (#e9d5ff) → Rose Pink (#fecdd3) → Peach (#fed7aa)
+  - **Unified Date/Location Badge**: Single line with bullet separator and glassmorphism effect
+  - **Typography Refinement**: Black title (700 weight), -0.01em letter-spacing for premium feel
+  - **Removed Elements**: Sparkle icon, bottom decorative hearts for maximum elegance
+  - **Hover Enhancement**: Enhanced shadow with pink glow effect, subtle image zoom (1.08x)
+  - **Content Spacing**: Increased top padding (32px) for better optical balance
+  - **Card Height**: Increased to 380px to accommodate new layout proportions
+  - **SVG Icons**: Replaced emoji icons with clean SVG calendar and map pin icons
+  - **Text Color Enhancement**: Date/location color changed to #c2185b (dark pink/magenta)
+  - **Badge Refinement**: Improved padding (8px 16px), spacing, and increased margin-bottom
+  - **Visual Polish**: Enhanced badge opacity (0.85), tighter gaps, refined separator styling
+  - **Card Width Optimization**: Max-width 420px for better proportions (narrower, more elegant)
+  - **Top Padding**: Reduced to 10px for tighter image-to-content spacing
+  - **Title Weight**: Set to 500 (medium) for refined, readable appearance
 - **Next Update:** Phase 4A Image Asset Integration Pipeline
 
 ---
 **Last Updated:** September 30, 2025  
-**Status:** Phase 3C Vertical Zigzag Timeline - MINIMALIST VERSION COMPLETED ✅💕✨  
-**Implementation:** Clean minimalist timeline - 3 hearts, cards with image/title/location/date only  
+**Status:** Phase 3D Card Design Enhancement - OPTION A COMPLETED ✅💕✨  
+**Implementation:** Sophisticated gradient cards with full-bleed images and unified date/location badges  
 **Next Milestone:** Phase 4A Content Integration - Image Asset Pipeline and Photo Management
 
 ## Current Project Status ✅ MINIMALIST TIMELINE COMPLETE
@@ -266,16 +282,16 @@ my-wedding-countdown/
 **Timeline Features Delivered:**
 - 📖 **12 Milestone Cards**: Complete love story from First Meeting to Engagement Party
 - ❤️ **Heart Timeline Dots**: Animated heart emojis connecting milestones on center line
-- 🖼️ **Image Focus**: 16:9 aspect ratio with hover zoom (1.1x) and romantic placeholders
-- 📍 **Location Badges**: Geographic context for each milestone with icon
-- 📅 **Date Badges**: Formatted dates with calendar icon and gradient background
+- 🖼️ **Full-Bleed Images**: Images touch card edges with 240px fixed height and top corner radius
+- 💕 **Gradient Backgrounds**: Lavender → Rose Pink → Peach (135deg diagonal flow)
+- 📍📅 **Unified Badge**: Date and location on single line with bullet separator
 - 💕 **Minimalist Hero**: Just 3 hearts with pulse animation (no text)
 - 💖 **Minimalist Ending**: Just 3 hearts with pulse animation (no text)
 - ✨ **Floating Elements**: Subtle sparkles and hearts in background (0.2 opacity)
 - 📱 **Mobile Optimized**: Full-width stacked cards with no center line
 - 💻 **Desktop Zigzag**: Alternating left/right 50% width cards with center timeline
-- 🎨 **Hover Effects**: Card lift (-8px), shadow enhancement, image scale (1.1x)
-- 📦 **Compact Cards**: min-height 320px - optimized for image-first design
+- 🎨 **Hover Effects**: Card lift (-8px), enhanced shadow with pink glow, image zoom (1.08x)
+- 📦 **Elegant Cards**: min-height 380px with sophisticated gradient and typography
 
 **Content Removed for Minimalism:**
 - ❌ Hero title "Our Journey Together"
@@ -294,9 +310,10 @@ my-wedding-countdown/
 
 **Technical Specifications Delivered:**
 - **HTML Pages**: 2 responsive pages with minimalist timeline structure
-- **CSS Framework**: Custom zigzag system with glassmorphism (400+ lines - reduced)
-- **JavaScript Architecture**: VerticalZigzagTimeline class with dynamic rendering (80+ lines)
-- **Performance**: Smooth 60fps animations with lazy image loading
-- **Mobile Compatibility**: Touch-optimized timeline with responsive breakpoints
-- **Content Model**: 12 milestones with title, date, location, image (quotes/descriptions available but not displayed)
+- **CSS Framework**: Enhanced gradient system with full-bleed images and glassmorphism effects
+- **JavaScript Architecture**: VerticalZigzagTimeline class with unified badge rendering
+- **Performance**: Smooth 60fps animations with lazy image loading and hardware acceleration
+- **Mobile Compatibility**: Touch-optimized timeline with responsive breakpoints at 1024px
+- **Design System**: Lavender-Rose-Peach gradient palette with sophisticated typography hierarchy
+- **Content Model**: 12 milestones with title, date, location, full-bleed images
 
