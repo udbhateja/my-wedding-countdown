@@ -146,6 +146,83 @@ const journeyMilestones = [
 ];
 
 // ===================================
+// BACKGROUND SLIDESHOW SYSTEM
+// Romantic Photo Carousel with Automatic Transitions
+// ===================================
+
+class BackgroundSlideshow {
+    constructor() {
+        this.container = document.getElementById('slideshowContainer');
+        if (!this.container) return;
+        
+        this.currentIndex = 0;
+        this.slides = [];
+        this.slideInterval = null;
+        this.transitionDuration = 7000; // 7 seconds per slide
+        
+        // Get available milestone images
+        this.images = journeyMilestones
+            .filter(milestone => milestone.image)
+            .map(milestone => `assets/images/${milestone.image}`);
+        
+        if (this.images.length > 0) {
+            this.initialize();
+        }
+    }
+    
+    initialize() {
+        this.createSlides();
+        this.startSlideshow();
+    }
+    
+    createSlides() {
+        // Create slide elements for each image
+        this.images.forEach((imageSrc, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'slideshow-slide';
+            slide.style.backgroundImage = `url('${imageSrc}')`;
+            
+            // Set first slide as active
+            if (index === 0) {
+                slide.classList.add('active');
+            }
+            
+            this.container.insertBefore(slide, this.container.firstChild);
+            this.slides.push(slide);
+        });
+    }
+    
+    startSlideshow() {
+        // Only run slideshow if there are multiple images
+        if (this.slides.length <= 1) return;
+        
+        this.slideInterval = setInterval(() => {
+            this.nextSlide();
+        }, this.transitionDuration);
+    }
+    
+    nextSlide() {
+        // Remove active class from current slide
+        this.slides[this.currentIndex].classList.remove('active');
+        
+        // Move to next slide (loop back to start)
+        this.currentIndex = (this.currentIndex + 1) % this.slides.length;
+        
+        // Add active class to new slide
+        this.slides[this.currentIndex].classList.add('active');
+    }
+    
+    destroy() {
+        if (this.slideInterval) {
+            clearInterval(this.slideInterval);
+        }
+        if (this.container) {
+            this.container.innerHTML = '<div class="slideshow-overlay"></div>';
+        }
+    }
+}
+
+// ===================================
 // FLOATING HEARTS ANIMATION SYSTEM
 // Clean Dual-Direction Architecture: Left (Top-Down) | Right (Bottom-Up)
 // ===================================
@@ -534,8 +611,9 @@ class App {
     }
     
     initializeComponents() {
-        // Initialize countdown timer and floating hearts on main page
+        // Initialize countdown timer, slideshow, and floating hearts on main page
         if (document.querySelector('.countdown-container')) {
+            this.slideshow = new BackgroundSlideshow();
             new CountdownTimer();
             this.floatingHearts = new FloatingHeartsAnimation();
         }
@@ -560,6 +638,9 @@ class App {
     
     setupCleanup() {
         window.addEventListener('beforeunload', () => {
+            if (this.slideshow) {
+                this.slideshow.destroy();
+            }
             if (this.floatingHearts) {
                 this.floatingHearts.destroy();
             }
