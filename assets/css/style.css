@@ -1430,6 +1430,8 @@ body {
         gap: 8px;
         min-height: 56px;
         align-items: center !important;
+        justify-content: center !important;
+        position: relative;
     }
     
     .timeline-header .back-button {
@@ -1437,6 +1439,10 @@ body {
         font-size: 0.85rem !important;
         height: 34px !important;
         gap: 4px !important;
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .back-arrow {
@@ -1483,6 +1489,7 @@ body {
         font-size: 0.8rem !important;
         height: 30px !important;
         gap: 3px !important;
+        left: 10px;
     }
     
     .back-arrow {
