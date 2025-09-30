@@ -1272,8 +1272,8 @@ body {
 /* Timeline Hero Section */
 .timeline-hero {
     text-align: center;
-    padding: var(--spacing-xl) var(--spacing-lg);
-    background: linear-gradient(135deg, #fefbff 0%, #fdf2f8 50%, #fce7f3 100%);
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
+    background: transparent;
     position: relative;
 }
 
@@ -1284,7 +1284,7 @@ body {
 }
 
 .hero-heart {
-    font-size: 2rem;
+    font-size: 1.5rem;
     animation: heartPulse 2s ease-in-out infinite;
 }
 
@@ -1304,8 +1304,19 @@ body {
     position: relative;
 }
 
-/* Center Timeline Line */
+/* Center Timeline Line - Hidden (using ::before on .timeline-events instead) */
 .timeline-line {
+    display: none;
+}
+
+/* Timeline Events Container */
+.timeline-events {
+    position: relative;
+}
+
+/* Center Timeline Line - Inside Events Container */
+.timeline-events::before {
+    content: '';
     position: absolute;
     left: 50%;
     top: 0;
@@ -1319,11 +1330,8 @@ body {
     transform: translateX(-50%);
     border-radius: var(--radius-sm);
     box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
-}
-
-/* Timeline Events Container */
-.timeline-events {
-    position: relative;
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* Individual Timeline Event */
@@ -1393,7 +1401,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.5);
     transition: all var(--transition-normal);
     position: relative;
-    min-height: 380px;
     max-width: 420px;
     width: 100%;
 }
@@ -1442,7 +1449,7 @@ body {
 
 /* Card Content */
 .card-content {
-    padding: 10px var(--spacing-lg) 12px var(--spacing-lg);
+    padding: 10px var(--spacing-lg) 8px var(--spacing-lg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1497,7 +1504,7 @@ body {
 .card-title {
     font-size: clamp(1.5rem, 4vw, 2rem);
     color: #1a1a1a;
-    margin-bottom: 0;
+    margin: 0;
     font-weight: 500;
     line-height: 1.3;
     letter-spacing: -0.01em;
@@ -1527,7 +1534,7 @@ body {
 .timeline-final {
     text-align: center;
     margin-top: var(--spacing-xl);
-    padding: var(--spacing-xl) var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
     background: transparent;
 }
 
@@ -1538,7 +1545,7 @@ body {
 }
 
 .final-heart {
-    font-size: 2rem;
+    font-size: 1.5rem;
     animation: heartPulse 2s ease-in-out infinite;
 }
 
@@ -1550,48 +1557,9 @@ body {
     animation-delay: 1s;
 }
 
-/* Floating Background Elements */
+/* Floating Background Elements - Removed */
 .floating-elements {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 1;
-}
-
-.float-sparkle,
-.float-heart {
-    position: absolute;
-    font-size: 1rem;
-    opacity: 0.2;
-    animation: floatGentle 4s ease-in-out infinite;
-}
-
-.float-sparkle:nth-child(2),
-.float-heart:nth-child(4) {
-    animation-delay: 1s;
-    animation-duration: 5s;
-}
-
-.float-sparkle:nth-child(3),
-.float-heart:nth-child(5) {
-    animation-delay: 2s;
-    animation-duration: 6s;
-}
-
-@keyframes floatGentle {
-    0%, 100% {
-        transform: translateY(0) translateX(0);
-    }
-    25% {
-        transform: translateY(-10px) translateX(5px);
-    }
-    50% {
-        transform: translateY(5px) translateX(-5px);
-    }
-    75% {
-        transform: translateY(-5px) translateX(10px);
-    }
+    display: none;
 }
 
 /* Mobile Responsive */

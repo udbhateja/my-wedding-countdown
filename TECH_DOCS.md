@@ -253,6 +253,11 @@ my-wedding-countdown/
   - **Card Width Optimization**: Max-width 420px for better proportions (narrower, more elegant)
   - **Top Padding**: Reduced to 10px for tighter image-to-content spacing
   - **Title Weight**: Set to 500 (medium) for refined, readable appearance
+  - **Dynamic Card Height**: Removed min-height constraint for content-based sizing
+  - **Hero Section Refinement**: Removed gradient background bar, reduced heart size to 1.5rem
+  - **Spacing Optimization**: Reduced hero/final padding for cleaner, more minimal appearance
+  - **Timeline Line Fix**: Repositioned line to end with last card, preventing overlap with final hearts
+  - **Floating Elements Removal**: Removed floating hearts and sparkles for cleaner background
 - **Next Update:** Phase 4A Image Asset Integration Pipeline
 
 ---
