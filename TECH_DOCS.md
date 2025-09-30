@@ -304,14 +304,41 @@ my-wedding-countdown/
   - **Improved Alignment**: Dots now align with top of cards for clearer visual hierarchy
   - **Transform Optimization**: Updated hover transforms to maintain proper positioning
   - **Visual Clarity**: Thicker line creates stronger visual backbone for timeline
+  - **Card Height Increase**: Image height expanded from 240px to 320px (33% larger)
+  - **Better Photo Display**: More vertical space shows fuller composition of photos
   - **Production Ready**: Clean CSS updates with proper commenting
-- **Next Update:** Phase 4C Journey Page Photo Integration
+- **2025-09-30:** **✅ PHASE 4C MOBILE HEADER ALIGNMENT FIX (FINAL - WITH !IMPORTANT)**
+  - **Centering Solution**: Changed approach from spacer-matching to flex:1 on header-title
+  - **Spacer Removal**: Hidden spacer on mobile (display: none) - not needed with new approach
+  - **Title Container**: header-title now uses flex:1 with justify-content:center for perfect centering
+  - **Button Sizing**: Removed min-width constraints, let button size naturally based on content
+  - **Gap Reduction**: Reduced header gap from var(--spacing-sm) to var(--spacing-xs) for tighter layout
+  - **Vertical Alignment**: Added align-items:center to header and button for perfect y-axis centering
+  - **Button Flexbox**: Back button uses display:flex with align-items:center and gap:6px
+  - **Line-height Fix**: Set line-height:1 on arrow, text, and button for consistent vertical alignment
+  - **CSS Specificity Fix**: Added !important flags to mobile styles to override desktop CSS
+  - **Desktop Line-height**: Added line-height:1 to desktop button, arrow, and text styles
+  - **Center Line Hidden**: Added .timeline-events::before { display: none } to hide center bar on mobile
+  - **Visual Cleanup**: Timeline now shows only cards on mobile, no center line or dots
+  - **Production Ready**: Clean mobile-first approach with perfect vertical and horizontal alignment
+- **2025-10-01:** **✅ PHASE 4D MOBILE BACK BUTTON ALIGNMENT FIX - COMPLETE RESOLUTION**
+  - **HTML Structure Fix**: Restored proper span elements for arrow and text within button
+  - **Button Container**: Display changed to inline-flex with align-items:center
+  - **Fixed Heights**: 38px (desktop), 34px (mobile), 30px (small mobile)
+  - **Gap Optimization**: 6px (desktop), 4px (mobile), 3px (small mobile)
+  - **Font Sizes Refined**: Arrow 1.1rem→1rem→0.9rem, Text 0.9rem→0.85rem→0.8rem
+  - **Line Height**: Unified to 1 for all elements to prevent vertical misalignment
+  - **Padding Standardized**: 8px 16px (desktop), 6px 12px (mobile), 5px 10px (small)
+  - **CSS Specificity**: Added !important flags to ensure mobile overrides apply
+  - **Vertical Alignment**: Perfect centering achieved with inline-flex and align-items
+  - **Production Ready**: Button now displays correctly across all mobile viewports
+- **Next Update:** Phase 4E Journey Page Photo Integration
 
 ---
-**Last Updated:** September 30, 2025  
-**Status:** Phase 4B Timeline Visual Refinements - COMPLETED ✅💕✨  
-**Implementation:** Thickened center timeline (4px→8px), repositioned heart dots to card tops for better alignment  
-**Next Milestone:** Phase 4C Journey Page Photo Integration - Replace timeline placeholders with actual photos
+**Last Updated:** October 01, 2025  
+**Status:** Phase 4D Mobile Back Button Alignment - COMPLETED ✅💕✨  
+**Implementation:** Fixed back button vertical alignment and sizing issues on mobile view  
+**Next Milestone:** Phase 4E Journey Page Photo Integration - Replace timeline placeholders with actual photos
 
 ## Current Project Status ✅ MINIMALIST TIMELINE COMPLETE
 
