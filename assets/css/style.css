@@ -367,9 +367,16 @@ body {
    =================================== */
 
 .journey-page {
-    background: linear-gradient(135deg, #fefbff 0%, #fdf2f8 50%, #fce7f3 100%);
+    /* Multi-color romantic gradient: purple → pink → rose → amber */
+    background: linear-gradient(135deg, 
+        #f3e8ff 0%,      /* Purple-100 */
+        #fce7f3 25%,     /* Pink-100 */
+        #ffe4e6 50%,     /* Rose-100 */
+        #fef3c7 100%     /* Amber-100 */
+    );
     min-height: 100vh;
     position: relative;
+    /* overflow: hidden; */ /* REMOVED - was preventing scroll */
 }
 
 .coming-soon-container {
@@ -1557,7 +1564,108 @@ body {
     animation-delay: 1s;
 }
 
-/* Floating Background Elements - Removed */
+/* ===================================
+   ROMANTIC BACKGROUND PATTERN OVERLAY
+   Dreamy SVG Pattern with Floating Hearts & Sparkles
+   =================================== */
+
+/* SVG Pattern Overlay */
+.romantic-pattern-overlay {
+    position: fixed;
+    inset: 0;
+    opacity: 0.1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ec4899' fill-opacity='0.3'%3E%3Cpath d='M30 30c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12zm12 0c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    z-index: 1;
+}
+
+/* Floating Sparkles Container */
+.floating-sparkles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.floating-sparkle {
+    position: absolute;
+    color: rgba(236, 72, 153, 0.3); /* pink-300/30 */
+    font-size: 1rem;
+    animation: sparkle-pulse 4s ease-in-out infinite;
+}
+
+/* Individual sparkle positions and delays */
+.floating-sparkle:nth-child(1) {
+    left: 20%;
+    top: 15%;
+    animation-delay: 0s;
+}
+
+.floating-sparkle:nth-child(2) {
+    left: 50%;
+    top: 45%;
+    animation-delay: 1.5s;
+}
+
+.floating-sparkle:nth-child(3) {
+    left: 80%;
+    top: 75%;
+    animation-delay: 3s;
+}
+
+/* Floating Hearts Container */
+.floating-background-hearts {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.floating-background-heart {
+    position: absolute;
+    color: rgba(236, 72, 153, 0.2); /* pink-300/20 */
+    font-size: 1rem;
+    animation: sparkle-pulse 4s ease-in-out infinite;
+}
+
+/* Individual heart positions and delays */
+.floating-background-heart:nth-child(1) {
+    left: 25%;
+    top: 25%;
+    animation-duration: 4s;
+}
+
+.floating-background-heart:nth-child(2) {
+    left: 75%;
+    right: 25%;
+    top: 75%;
+    animation-duration: 5s;
+}
+
+/* Sparkle Pulse Animation */
+@keyframes sparkle-pulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.9) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(180deg);
+    }
+}
+
+/* Enhanced Timeline Header with Gradient Background */
+.timeline-header {
+    background: linear-gradient(to right, 
+        rgba(255, 255, 255, 0.6), 
+        rgba(255, 240, 245, 0.6), 
+        rgba(255, 255, 255, 0.6)
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 192, 203, 0.5);
+}
+
 .floating-elements {
     display: none;
 }
