@@ -140,7 +140,7 @@ const journeyMilestones = [
         id: 22,
         title: "🫶💘",
         date: "2025-10-08",
-        image: "hands.MOV",
+        image: "hands.mp4",
         location: "CP",
     },
     {
