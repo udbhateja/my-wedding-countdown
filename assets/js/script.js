@@ -27,92 +27,113 @@ const journeyMilestones = [
         id: 1,
         title: "First Meeting",
         date: "2024-08-30",
-        image: "1-first-meet.jpg",
+        image: "01-first-meet.jpg",
         location: "McD Crossriver Mall",
     },
     {
         id: 2,
         title: "#Rokafied",
         date: "2024-11-23",
-        image: "2-roka.jpg",
+        image: "02-roka.jpg",
         location: "3 Storey Restaurant",
     },
     {
         id: 3,
         title: "First Date",
         date: "2024-11-25",
-        image: "3-first-date.jpg",
+        image: "03-first-date.jpg",
         location: "CP, Delhi",
     },
     {
         id: 4,
         title: "First Movie",
         date: "2024-12-15",
-        image: "4-first-movie.jpg",
+        image: "04-first-movie.jpg",
         location: "NSP",
     },
     {
         id: 5,
         title: "Chai Date",
         date: "2024-12-17",
-        image: "5-chai-date.jpg",
+        image: "05-chai-date.jpg",
         location: "Chaayos, ISBT",
     },
     {
         id: 6,
         title: "Komu Bday",
         date: "2025-02-07",
-        images: ["6-1-bday-cake.jpg", "6-2-bday.jpg"],
+        images: ["06-1-bday-cake.jpg", "06-2-bday.jpg"],
         location: "F-Block",
     },
     {
         id: 7,
-        title: "First Gurudwara Visit",
-        date: "2025-04-11",
-        image: "7-first-gurudwara.jpg",
-        location: "Sis Ganj Sahib",
+        title: "Valentines",
+        date: "2025-02-14",
+        image: "07-valentines.jpg",
+        location: "Bangalore",
     },
     {
         id: 8,
-        title: "Meeting the Family",
-        date: "2023-06-10",
-        image: "test.jpg",
-        location: "Parents' Home",
+        title: "First Gurudwara Visit",
+        date: "2025-04-11",
+        image: "08-first-gurudwara.jpg",
+        location: "Sis Ganj Sahib",
     },
     {
         id: 9,
-        title: "First Anniversary",
-        date: "2024-05-01",
-        image: "anniversary.jpg",
-        location: "The Garden Restaurant",
-    },
-    {
-        id: 7,
-        title: "First Kiss",
-        date: "2023-02-20",
-        image: "first-kiss.jpg",
-        location: "Moonlight Park",
+        title: "First Baarish",
+        date: "2025-04-11",
+        image: "09-first-baarish.jpg",
+        location: "Red Fort",
     },
     {
         id: 10,
-        title: "Moving In Together",
-        date: "2024-08-01",
-        image: "moving-in.jpg",
-        location: "Our First Home",
+        title: "First Kiss",
+        date: "2025-04-12",
+        image: "10-first-kiss.jpg",
+        location: "Moonlight Park",
     },
     {
         id: 11,
-        title: "Adopting Our Pet",
-        date: "2024-10-15",
-        image: "pet-adoption.jpg",
-        location: "Animal Shelter",
+        title: "First Period",
+        date: "2025-04-12",
+        image: ["11-first-period.jpg", "11-india-gate.jpg"],
+        location: "Our First Home",
     },
     {
         id: 12,
-        title: "Engagement Party",
-        date: "2025-01-15",
-        image: "engagement-party.jpg",
-        location: "Grand Ballroom",
+        title: "Maharaj Ji",
+        date: "2025-05-02",
+        image: "12-maharaj-ji.jpg",
+        location: "Shalimar Bag",
+    },
+    {
+        id: 13,
+        title: "To Airport",
+        date: "2025-06-19",
+        image: ["13-1-airport.jpg", "13-2-airport.jpg"],
+        location: "Airport",
+    },
+    {
+        id: 14,
+        title: "My Bday",
+        date: "2025-07-08",
+        image: "14-my-bday.jpg",
+        location: "Bangalore",
+    },
+    {
+        id: 15,
+        title: "Dinner Date",
+        date: "2025-10-08",
+        image: "15-dinner-date.jpg",
+        location: "Qutub Minar",
+    },
+        {
+        id: 16,
+        title: "First Auto Ride",
+        date: "2025-11-08",
+        image: "16-first-auto.jpg",
+        location: "Delhi",
     }
 ];
 
@@ -146,7 +167,7 @@ class BackgroundSlideshow {
         this.currentIndex = 0;
         this.slides = [];
         this.slideInterval = null;
-        this.transitionDuration = 7000; // 7 seconds per slide
+        this.transitionDuration = 3000; // 3 seconds per slide
         
         // Get available milestone images
         const collectedImages = journeyMilestones
@@ -170,6 +191,7 @@ class BackgroundSlideshow {
         this.images.forEach((imageSrc, index) => {
             const slide = document.createElement('div');
             slide.className = 'slideshow-slide';
+            slide.classList.add(index % 2 === 0 ? 'scale-up' : 'scale-down');
             slide.style.backgroundImage = `url('${imageSrc}')`;
             
             // Set first slide as active
@@ -192,8 +214,13 @@ class BackgroundSlideshow {
     }
     
     nextSlide() {
-        // Remove active class from current slide
-        this.slides[this.currentIndex].classList.remove('active');
+        const currentSlide = this.slides[this.currentIndex];
+        currentSlide.classList.remove('active');
+        currentSlide.classList.add('previous');
+        window.clearTimeout(currentSlide._previousTimeout);
+        currentSlide._previousTimeout = window.setTimeout(() => {
+            currentSlide.classList.remove('previous');
+        }, 900);
         
         // Move to next slide (loop back to start)
         this.currentIndex = (this.currentIndex + 1) % this.slides.length;
@@ -605,7 +632,7 @@ class VerticalZigzagTimeline {
         }).join('')}</div>`;
 
         return `
-            <div class="card-image-slider" data-slide-interval="3000">
+            <div class="card-image-slider" data-slide-interval="1500">
                 ${slides}
                 ${indicators}
             </div>
@@ -624,7 +651,7 @@ class VerticalZigzagTimeline {
         if (prefersReducedMotion) return;
 
         let currentIndex = 0;
-        const intervalDuration = parseInt(slider.dataset.slideInterval, 10) || 3000;
+        const intervalDuration = parseInt(slider.dataset.slideInterval, 10) || 1500;
 
         const showSlide = (nextIndex) => {
             const previousIndex = currentIndex;
