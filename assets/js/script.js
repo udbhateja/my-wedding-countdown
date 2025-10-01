@@ -115,29 +115,84 @@ const journeyMilestones = [
         location: "Airport",
     },
     {
+        id: 21,
+        title: "Pizaa >>> Uday",
+        date: "2025-06-19",
+        image: "pizza.mp4",
+        location: "Pizza Hut, IGI",
+    },
+    {
         id: 14,
         title: "My Bday",
         date: "2025-07-08",
         image: "14-my-bday.jpg",
+        mediaFit: "contain",
         location: "Bangalore",
     },
     {
         id: 15,
+        title: "Mehndi #UDAY",
+        date: "2025-07-27",
+        image: "17-mehndi.jpg",
+        location: "Delhi",
+    },
+    {
+        id: 22,
+        title: "🫶💘",
+        date: "2025-10-08",
+        image: "hands.MOV",
+        location: "CP",
+    },
+    {
+        id: 16,
         title: "Dinner Date",
         date: "2025-10-08",
         image: "15-dinner-date.jpg",
         location: "Qutub Minar",
     },
-        {
-        id: 16,
+    {
+        id: 17,
         title: "First Auto Ride",
         date: "2025-11-08",
         image: "16-first-auto.jpg",
         location: "Delhi",
+    },  
+    {
+        id: 18,
+        title: "I love you 😘",
+        date: "2025-11-21",
+        images: ["99-01.jpg", "99-02.jpg", "99-03.jpg", "99-04.jpg", "99-05.jpg"],
+        mediaFit: "contain",
+        location: "Delhi",
+    },
+    {
+        id: 19,
+        title: "First Nazar",
+        date: "2025-11-08",
+        image: "nazar.mp4",
+        location: "Whatsapp",
+    },
+    {
+        id: 20,
+        title: "Chai #TezPati",
+        date: "2025-11-08",
+        image: "vlog.mp4",
+        location: "Whatsapp",
     }
 ];
 
-const getMilestoneImages = (milestone) => {
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif'];
+const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.webm'];
+
+const isImageFile = (filename = '') => {
+    return IMAGE_EXTENSIONS.some(ext => filename.toLowerCase().endsWith(ext));
+};
+
+const isVideoFile = (filename = '') => {
+    return VIDEO_EXTENSIONS.some(ext => filename.toLowerCase().endsWith(ext));
+};
+
+const getMilestoneMedia = (milestone) => {
     if (!milestone) return [];
     if (Array.isArray(milestone.images)) {
         return milestone.images.filter(Boolean);
@@ -171,7 +226,8 @@ class BackgroundSlideshow {
         
         // Get available milestone images
         const collectedImages = journeyMilestones
-            .flatMap(milestone => getMilestoneImages(milestone));
+            .flatMap(milestone => getMilestoneMedia(milestone))
+            .filter(isImageFile);
 
         this.images = [...new Set(collectedImages)]
             .map(imageName => `assets/images/${imageName}`);
@@ -539,8 +595,8 @@ class VerticalZigzagTimeline {
     
     createEventElement(milestone, index) {
         const isLeft = index % 2 === 0;
-        const imageSources = getMilestoneImages(milestone);
-        const cardImageMarkup = this.buildCardImageMarkup(milestone, imageSources);
+        const mediaSources = getMilestoneMedia(milestone);
+        const cardImageMarkup = this.buildCardMediaMarkup(milestone, mediaSources);
         
         // Create main event container
         const event = document.createElement('div');
@@ -596,7 +652,7 @@ class VerticalZigzagTimeline {
         event.appendChild(dot);
         event.appendChild(cardContainer);
         
-        if (imageSources.length > 1) {
+        if (mediaSources.length > 1) {
             this.setupCardSlideshow(card);
         }
         
@@ -610,23 +666,21 @@ class VerticalZigzagTimeline {
         this.teardownSlideshows();
     }
 
-    buildCardImageMarkup(milestone, imageSources) {
-        if (!imageSources.length) {
+    buildCardMediaMarkup(milestone, mediaSources) {
+        if (!mediaSources.length) {
             return '<div class="card-image-placeholder">💕</div>';
         }
 
-        if (imageSources.length === 1) {
-            const image = imageSources[0];
-            return `<img src="assets/images/${image}" alt="${milestone.title}" loading="lazy">`;
+        if (mediaSources.length === 1) {
+            return this.buildMediaElement(milestone, mediaSources[0], true, false);
         }
 
-        const slides = imageSources.map((image, index) => {
-            const slideClass = index === 0 ? 'card-slide active' : 'card-slide';
-            const altText = `${milestone.title} photo ${index + 1}`;
-            return `<img class="${slideClass}" src="assets/images/${image}" alt="${altText}" loading="lazy">`;
+        const slides = mediaSources.map((media, index) => {
+            const isActive = index === 0;
+            return this.buildMediaElement(milestone, media, isActive, true);
         }).join('');
 
-        const indicators = `<div class="card-image-indicators">${imageSources.map((_, index) => {
+        const indicators = `<div class="card-image-indicators">${mediaSources.map((_, index) => {
             const indicatorClass = index === 0 ? 'card-image-indicator active' : 'card-image-indicator';
             return `<span class="${indicatorClass}"></span>`;
         }).join('')}</div>`;
@@ -637,6 +691,60 @@ class VerticalZigzagTimeline {
                 ${indicators}
             </div>
         `;
+    }
+
+    buildMediaElement(milestone, mediaSource, isActive, isSlider = true) {
+        const isVideo = isVideoFile(mediaSource);
+        const mediaType = isVideo ? 'video' : 'image';
+        const fitPreference = this.getMediaFitPreference(milestone, mediaType);
+
+        const classes = [isSlider ? 'card-slide' : 'card-media', `media-${fitPreference}`];
+        if (isSlider && isActive) {
+            classes.push('active');
+        }
+
+        const dataAttributes = `data-media-type="${mediaType}"`;
+
+        if (!isVideo && isImageFile(mediaSource)) {
+            const altText = `${milestone.title}`;
+            return `<img ${dataAttributes} class="${classes.join(' ')}" src="assets/images/${mediaSource}" alt="${altText}" loading="lazy">`;
+        }
+
+        if (isVideo) {
+            const videoType = mediaSource.toLowerCase().endsWith('.mov') ? 'video/quicktime' :
+                mediaSource.toLowerCase().endsWith('.webm') ? 'video/webm' : 'video/mp4';
+            return `
+                <video ${dataAttributes} class="${classes.join(' ')}" data-card-video muted playsinline loop preload="metadata" controls>
+                    <source src="assets/images/${mediaSource}" type="${videoType}">
+                    Your browser does not support the video tag.
+                </video>
+            `;
+        }
+
+        return '<div class="card-image-placeholder">💕</div>';
+    }
+
+    getMediaFitPreference(milestone, mediaType) {
+        const normalizeFit = (value) => {
+            if (typeof value !== 'string') return null;
+            const normalized = value.toLowerCase();
+            return normalized === 'cover' || normalized === 'contain' ? normalized : null;
+        };
+
+        const preference = milestone && milestone.mediaFit;
+        const typeKey = mediaType === 'video' ? 'video' : 'image';
+
+        let fit = normalizeFit(preference);
+
+        if (!fit && preference && typeof preference === 'object') {
+            fit = normalizeFit(preference[typeKey]) || normalizeFit(preference.default);
+        }
+
+        if (fit) {
+            return fit;
+        }
+
+        return mediaType === 'video' ? 'contain' : 'cover';
     }
 
     setupCardSlideshow(card) {
@@ -653,11 +761,35 @@ class VerticalZigzagTimeline {
         let currentIndex = 0;
         const intervalDuration = parseInt(slider.dataset.slideInterval, 10) || 1500;
 
+        const playSlideMedia = (slide) => {
+            if (slide && slide.tagName === 'VIDEO') {
+                slide.muted = true;
+                const playPromise = slide.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {});
+                }
+            }
+        };
+
+        const pauseSlideMedia = (slide, reset = false) => {
+            if (slide && slide.tagName === 'VIDEO') {
+                slide.pause();
+                if (reset) {
+                    try {
+                        slide.currentTime = 0;
+                    } catch (error) {
+                        // Ignore DOMExceptions for non-seekable streams
+                    }
+                }
+            }
+        };
+
         const showSlide = (nextIndex) => {
             const previousIndex = currentIndex;
             const previousSlide = slides[previousIndex];
             previousSlide.classList.remove('active');
             previousSlide.classList.add('previous');
+            pauseSlideMedia(previousSlide, true);
             if (indicators[previousIndex]) {
                 indicators[previousIndex].classList.remove('active');
             }
@@ -667,6 +799,7 @@ class VerticalZigzagTimeline {
             const nextSlide = slides[currentIndex];
             nextSlide.classList.remove('previous');
             nextSlide.classList.add('active');
+            playSlideMedia(nextSlide);
             if (indicators[currentIndex]) {
                 indicators[currentIndex].classList.add('active');
             }
@@ -701,10 +834,16 @@ class VerticalZigzagTimeline {
         slider.addEventListener('mouseenter', handleMouseEnter);
         slider.addEventListener('mouseleave', handleMouseLeave);
 
+        playSlideMedia(slides[currentIndex]);
+
         const cleanup = () => {
             stop();
             slider.removeEventListener('mouseenter', handleMouseEnter);
             slider.removeEventListener('mouseleave', handleMouseLeave);
+            slides.forEach(slide => {
+                window.clearTimeout(slide._cleanupTimeout);
+                pauseSlideMedia(slide, true);
+            });
         };
 
         this.sliderCleanups.push(cleanup);
@@ -754,7 +893,9 @@ class App {
         // Preload images
         const imageUrls = [...new Set(
             journeyMilestones.flatMap(milestone => 
-                getMilestoneImages(milestone).map(image => `assets/images/${image}`)
+                getMilestoneMedia(milestone)
+                    .filter(isImageFile)
+                    .map(image => `assets/images/${image}`)
             )
         )];
         Utils.preloadImages(imageUrls);
