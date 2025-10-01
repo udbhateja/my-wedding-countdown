@@ -26,124 +26,112 @@ const journeyMilestones = [
     {
         id: 1,
         title: "First Meeting",
-        date: "2023-01-15",
-        description: "The day our paths crossed for the first time. I knew there was something special about you from that very first smile.",
-        image: "first-meeting.jpg",
-        location: "Coffee House Downtown",
-        quote: "In a room full of people, my eyes still search for you.",
-        constellation: { emoji: "🌟", color: "#ff6b9d" }
+        date: "2024-08-30",
+        image: "1-first-meet.jpg",
+        location: "McD Crossriver Mall",
     },
     {
         id: 2,
-        title: "First Date",
-        date: "2023-02-14",
-        description: "A perfect Valentine's Day that started it all. We talked for hours and I knew I wanted to spend forever getting to know you.",
-        image: "first-date.jpg",
-        location: "Bella Vista Restaurant",
-        quote: "I could listen to you talk for hours and never get bored.",
-        constellation: { emoji: "💕", color: "#fd79a8" }
+        title: "#Rokafied",
+        date: "2024-11-23",
+        image: "2-roka.jpg",
+        location: "3 Storey Restaurant",
     },
     {
         id: 3,
-        title: "First Movie Together",
-        date: "2023-03-20",
-        description: "Sharing popcorn and stolen glances. Little did I know it would become our tradition.",
-        image: "first-movie.jpg",
-        location: "Cinema Plaza",
-        quote: "Home is wherever I'm with you.",
-        constellation: { emoji: "🎬", color: "#ffeaa7" }
+        title: "First Date",
+        date: "2024-11-25",
+        image: "3-first-date.jpg",
+        location: "CP, Delhi",
     },
     {
         id: 4,
-        title: "Made It Official",
-        date: "2023-05-01",
-        description: "The day we became 'us'. You looked so beautiful in the spring sunshine when you said yes.",
-        image: "official.jpg",
-        location: "Riverside Park",
-        quote: "From this day forward, you're my forever.",
-        constellation: { emoji: "💖", color: "#fab1a0" }
+        title: "First Movie",
+        date: "2024-12-15",
+        image: "4-first-movie.jpg",
+        location: "NSP",
     },
     {
         id: 5,
-        title: "First Trip Together",
-        date: "2023-08-15",
-        description: "Creating memories in new places. Every adventure is better with you by my side.",
-        image: "first-trip.jpg",
-        location: "Beach Paradise Resort",
-        quote: "Together is my favorite place to be.",
-        constellation: { emoji: "✈️", color: "#a29bfe" }
+        title: "Chai Date",
+        date: "2024-12-17",
+        image: "5-chai-date.jpg",
+        location: "Chaayos, ISBT",
     },
     {
         id: 6,
-        title: "The Proposal",
-        date: "2024-12-25",
-        description: "Christmas magic and the most important question. When you said yes, my heart felt like it would burst with joy.",
-        image: "proposal.jpg",
-        location: "Seaside Cliff at Sunset",
-        quote: "Will you marry me? Because I can't imagine life without you.",
-        constellation: { emoji: "💍", color: "#e17055" }
+        title: "Komu Bday",
+        date: "2025-02-07",
+        images: ["6-1-bday-cake.jpg", "6-2-bday.jpg"],
+        location: "F-Block",
     },
     {
         id: 7,
-        title: "First Kiss",
-        date: "2023-02-20",
-        description: "A moment that stopped time. Under the stars, our lips met and everything changed.",
-        image: "first-kiss.jpg",
-        location: "Moonlight Park",
-        quote: "That kiss was the beginning of everything beautiful.",
-        constellation: { emoji: "💋", color: "#ff7675" }
+        title: "First Gurudwara Visit",
+        date: "2025-04-11",
+        image: "7-first-gurudwara.jpg",
+        location: "Sis Ganj Sahib",
     },
     {
         id: 8,
         title: "Meeting the Family",
         date: "2023-06-10",
-        description: "Becoming part of each other's worlds. Your family welcomed me with open hearts.",
-        image: "family-meeting.jpg",
+        image: "test.jpg",
         location: "Parents' Home",
-        quote: "Love grows when families unite.",
-        constellation: { emoji: "🏠", color: "#74b9ff" }
     },
     {
         id: 9,
         title: "First Anniversary",
         date: "2024-05-01",
-        description: "Celebrating one year of love. Every moment together has been a gift.",
         image: "anniversary.jpg",
         location: "The Garden Restaurant",
-        quote: "365 days of loving you, and forever more to go.",
-        constellation: { emoji: "🎉", color: "#55a3ff" }
+    },
+    {
+        id: 7,
+        title: "First Kiss",
+        date: "2023-02-20",
+        image: "first-kiss.jpg",
+        location: "Moonlight Park",
     },
     {
         id: 10,
         title: "Moving In Together",
         date: "2024-08-01",
-        description: "Building our first home together. Every morning I wake up grateful to see your face.",
         image: "moving-in.jpg",
         location: "Our First Home",
-        quote: "This is where our forever begins.",
-        constellation: { emoji: "📦", color: "#fdcb6e" }
     },
     {
         id: 11,
         title: "Adopting Our Pet",
         date: "2024-10-15",
-        description: "Adding a furry member to our family. Now we're a family of three!",
         image: "pet-adoption.jpg",
         location: "Animal Shelter",
-        quote: "Love makes a family, and ours just grew.",
-        constellation: { emoji: "🐶", color: "#6c5ce7" }
     },
     {
         id: 12,
         title: "Engagement Party",
         date: "2025-01-15",
-        description: "Celebrating with all our loved ones. Their joy and blessings made the night perfect.",
         image: "engagement-party.jpg",
         location: "Grand Ballroom",
-        quote: "Surrounded by love, ready for our forever.",
-        constellation: { emoji: "🎆", color: "#fd79a8" }
     }
 ];
+
+const getMilestoneImages = (milestone) => {
+    if (!milestone) return [];
+    if (Array.isArray(milestone.images)) {
+        return milestone.images.filter(Boolean);
+    }
+    if (Array.isArray(milestone.image)) {
+        return milestone.image.filter(Boolean);
+    }
+    if (milestone.images) {
+        return [milestone.images].filter(Boolean);
+    }
+    if (milestone.image) {
+        return [milestone.image].filter(Boolean);
+    }
+    return [];
+};
 
 // ===================================
 // BACKGROUND SLIDESHOW SYSTEM
@@ -161,9 +149,11 @@ class BackgroundSlideshow {
         this.transitionDuration = 7000; // 7 seconds per slide
         
         // Get available milestone images
-        this.images = journeyMilestones
-            .filter(milestone => milestone.image)
-            .map(milestone => `assets/images/${milestone.image}`);
+        const collectedImages = journeyMilestones
+            .flatMap(milestone => getMilestoneImages(milestone));
+
+        this.images = [...new Set(collectedImages)]
+            .map(imageName => `assets/images/${imageName}`);
         
         if (this.images.length > 0) {
             this.initialize();
@@ -495,6 +485,7 @@ class VerticalZigzagTimeline {
     constructor() {
         this.container = document.getElementById('timelineEvents');
         this.milestones = journeyMilestones;
+        this.sliderCleanups = [];
         
         if (this.container) {
             this.initialize();
@@ -508,6 +499,7 @@ class VerticalZigzagTimeline {
     renderTimeline() {
         if (!this.container || !this.milestones.length) return;
         
+        this.teardownSlideshows();
         // Clear container
         this.container.innerHTML = '';
         
@@ -520,6 +512,8 @@ class VerticalZigzagTimeline {
     
     createEventElement(milestone, index) {
         const isLeft = index % 2 === 0;
+        const imageSources = getMilestoneImages(milestone);
+        const cardImageMarkup = this.buildCardImageMarkup(milestone, imageSources);
         
         // Create main event container
         const event = document.createElement('div');
@@ -550,11 +544,7 @@ class VerticalZigzagTimeline {
         // Build card HTML
         card.innerHTML = `
             <div class="card-image">
-                ${milestone.image ? `
-                    <img src="assets/images/${milestone.image}" alt="${milestone.title}" loading="lazy">
-                ` : `
-                    <div class="card-image-placeholder">💕</div>
-                `}
+                ${cardImageMarkup}
             </div>
             
             <div class="card-content">
@@ -579,6 +569,10 @@ class VerticalZigzagTimeline {
         event.appendChild(dot);
         event.appendChild(cardContainer);
         
+        if (imageSources.length > 1) {
+            this.setupCardSlideshow(card);
+        }
+        
         return event;
     }
     
@@ -586,6 +580,113 @@ class VerticalZigzagTimeline {
         if (this.container) {
             this.container.innerHTML = '';
         }
+        this.teardownSlideshows();
+    }
+
+    buildCardImageMarkup(milestone, imageSources) {
+        if (!imageSources.length) {
+            return '<div class="card-image-placeholder">💕</div>';
+        }
+
+        if (imageSources.length === 1) {
+            const image = imageSources[0];
+            return `<img src="assets/images/${image}" alt="${milestone.title}" loading="lazy">`;
+        }
+
+        const slides = imageSources.map((image, index) => {
+            const slideClass = index === 0 ? 'card-slide active' : 'card-slide';
+            const altText = `${milestone.title} photo ${index + 1}`;
+            return `<img class="${slideClass}" src="assets/images/${image}" alt="${altText}" loading="lazy">`;
+        }).join('');
+
+        const indicators = `<div class="card-image-indicators">${imageSources.map((_, index) => {
+            const indicatorClass = index === 0 ? 'card-image-indicator active' : 'card-image-indicator';
+            return `<span class="${indicatorClass}"></span>`;
+        }).join('')}</div>`;
+
+        return `
+            <div class="card-image-slider" data-slide-interval="3000">
+                ${slides}
+                ${indicators}
+            </div>
+        `;
+    }
+
+    setupCardSlideshow(card) {
+        const slider = card.querySelector('.card-image-slider');
+        if (!slider) return;
+
+        const slides = Array.from(slider.querySelectorAll('.card-slide'));
+        const indicators = Array.from(slider.querySelectorAll('.card-image-indicator'));
+        if (slides.length <= 1) return;
+
+        const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        let currentIndex = 0;
+        const intervalDuration = parseInt(slider.dataset.slideInterval, 10) || 3000;
+
+        const showSlide = (nextIndex) => {
+            const previousIndex = currentIndex;
+            const previousSlide = slides[previousIndex];
+            previousSlide.classList.remove('active');
+            previousSlide.classList.add('previous');
+            if (indicators[previousIndex]) {
+                indicators[previousIndex].classList.remove('active');
+            }
+
+            currentIndex = nextIndex;
+
+            const nextSlide = slides[currentIndex];
+            nextSlide.classList.remove('previous');
+            nextSlide.classList.add('active');
+            if (indicators[currentIndex]) {
+                indicators[currentIndex].classList.add('active');
+            }
+
+            window.clearTimeout(previousSlide._cleanupTimeout);
+            previousSlide._cleanupTimeout = window.setTimeout(() => {
+                previousSlide.classList.remove('previous');
+            }, 700);
+        };
+
+        const advance = () => {
+            const nextIndex = (currentIndex + 1) % slides.length;
+            showSlide(nextIndex);
+        };
+
+        let intervalId = window.setInterval(advance, intervalDuration);
+
+        const stop = () => {
+            if (intervalId === null) return;
+            window.clearInterval(intervalId);
+            intervalId = null;
+        };
+
+        const start = () => {
+            if (intervalId !== null) return;
+            intervalId = window.setInterval(advance, intervalDuration);
+        };
+
+        const handleMouseEnter = () => stop();
+        const handleMouseLeave = () => start();
+
+        slider.addEventListener('mouseenter', handleMouseEnter);
+        slider.addEventListener('mouseleave', handleMouseLeave);
+
+        const cleanup = () => {
+            stop();
+            slider.removeEventListener('mouseenter', handleMouseEnter);
+            slider.removeEventListener('mouseleave', handleMouseLeave);
+        };
+
+        this.sliderCleanups.push(cleanup);
+    }
+
+    teardownSlideshows() {
+        if (!this.sliderCleanups.length) return;
+        this.sliderCleanups.forEach(cleanup => cleanup());
+        this.sliderCleanups = [];
     }
 }
 
@@ -624,9 +725,11 @@ class App {
         }
         
         // Preload images
-        const imageUrls = journeyMilestones.map(milestone => 
-            `assets/images/${milestone.image}`
-        );
+        const imageUrls = [...new Set(
+            journeyMilestones.flatMap(milestone => 
+                getMilestoneImages(milestone).map(image => `assets/images/${image}`)
+            )
+        )];
         Utils.preloadImages(imageUrls);
         
         // Add smooth page transitions
