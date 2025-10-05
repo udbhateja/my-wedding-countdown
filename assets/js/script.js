@@ -91,7 +91,8 @@ const journeyMilestones = [
         title: "First Kiss",
         date: "2025-04-12",
         image: "10-first-kiss.jpg",
-        location: "Moonlight Park",
+        location: "Delhi",
+        isPrivate: true,
     },
     {
         id: 11,
@@ -120,6 +121,7 @@ const journeyMilestones = [
         date: "2025-06-19",
         image: "pizza.mp4",
         location: "Pizza Hut, IGI",
+        isPrivate: true,
     },
     {
         id: 14,
@@ -142,6 +144,7 @@ const journeyMilestones = [
         date: "2025-10-08",
         image: "hands.mp4",
         location: "CP",
+        isPrivate: true,
     },
     {
         id: 16,
@@ -164,6 +167,7 @@ const journeyMilestones = [
         images: ["99-01.jpg", "99-02.jpg", "99-03.jpg", "99-04.jpg", "99-05.jpg"],
         mediaFit: "contain",
         location: "Delhi",
+        isPrivate: true,
     },
     {
         id: 19,
@@ -171,6 +175,7 @@ const journeyMilestones = [
         date: "2025-11-08",
         image: "nazar.mp4",
         location: "Whatsapp",
+        isPrivate: true,
     },
     {
         id: 20,
@@ -178,8 +183,53 @@ const journeyMilestones = [
         date: "2025-11-08",
         image: "vlog.mp4",
         location: "Whatsapp",
+        isPrivate: true,
     }
 ];
+
+const VIEW_MODES = Object.freeze({
+    PRIVATE: 'private',
+    PUBLIC: 'public'
+});
+
+const CURRENT_VIEW_MODE = (() => {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const mode = (params.get('view') || '').toLowerCase();
+        if (mode === VIEW_MODES.PRIVATE) {
+            return VIEW_MODES.PRIVATE;
+        }
+        if (mode === VIEW_MODES.PUBLIC) {
+            return VIEW_MODES.PUBLIC;
+        }
+    } catch (error) {
+        // Ignore URL parsing issues and fall back to public mode
+    }
+    return VIEW_MODES.PUBLIC;
+})();
+
+const getVisibleMilestones = () => {
+    if (CURRENT_VIEW_MODE === VIEW_MODES.PRIVATE) {
+        return journeyMilestones;
+    }
+    return journeyMilestones.filter(milestone => !milestone?.isPrivate);
+};
+
+const VISIBLE_MILESTONES = getVisibleMilestones();
+
+const appendViewParam = (url) => {
+    if (!url || CURRENT_VIEW_MODE !== VIEW_MODES.PRIVATE) {
+        return url;
+    }
+
+    const hasViewParam = /[?&]view=/.test(url);
+    if (hasViewParam) {
+        return url;
+    }
+
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}view=${VIEW_MODES.PRIVATE}`;
+};
 
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif'];
 const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.webm'];
@@ -225,7 +275,7 @@ class BackgroundSlideshow {
         this.transitionDuration = 3000; // 3 seconds per slide
         
         // Get available milestone images
-        const collectedImages = journeyMilestones
+        const collectedImages = VISIBLE_MILESTONES
             .flatMap(milestone => getMilestoneMedia(milestone))
             .filter(isImageFile);
 
@@ -516,7 +566,7 @@ class CountdownTimer {
     navigateToJourney() {
         document.body.style.opacity = '0';
         setTimeout(() => {
-            window.location.href = 'journey.html';
+            window.location.href = appendViewParam('journey.html');
         }, CONFIG.animationDuration);
     }
 }
@@ -567,7 +617,7 @@ class Utils {
 class VerticalZigzagTimeline {
     constructor() {
         this.container = document.getElementById('timelineEvents');
-        this.milestones = journeyMilestones;
+        this.milestones = VISIBLE_MILESTONES;
         this.sliderCleanups = [];
         
         if (this.container) {
@@ -892,7 +942,7 @@ class App {
         
         // Preload images
         const imageUrls = [...new Set(
-            journeyMilestones.flatMap(milestone => 
+            VISIBLE_MILESTONES.flatMap(milestone => 
                 getMilestoneMedia(milestone)
                     .filter(isImageFile)
                     .map(image => `assets/images/${image}`)
@@ -902,9 +952,12 @@ class App {
         
         // Add smooth page transitions
         this.setupPageTransitions();
-        
+
         // Setup cleanup on page unload
         this.setupCleanup();
+
+        // Ensure navigation links preserve the current view mode
+        this.setupViewAwareNavigation();
     }
     
     setupCleanup() {
@@ -927,6 +980,26 @@ class App {
             document.body.style.transition = 'opacity 0.5s ease';
             document.body.style.opacity = '1';
         }, 100);
+    }
+
+    setupViewAwareNavigation() {
+        const navElements = document.querySelectorAll('[data-nav-target]');
+        if (!navElements.length) {
+            return;
+        }
+
+        navElements.forEach(element => {
+            element.addEventListener('click', (event) => {
+                const target = element.getAttribute('data-nav-target');
+                if (!target) {
+                    return;
+                }
+
+                event.preventDefault();
+                const destination = appendViewParam(target);
+                window.location.href = destination;
+            });
+        });
     }
 }
 
